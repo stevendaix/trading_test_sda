@@ -66,12 +66,37 @@ def load_pea_universe(csv_path: Path = Path(__file__).parent.parent / "config" /
         "type": ["stock"]
     })
 
+def validate_tickers(symbols: list, yahoo_tickers: list) -> tuple:
+    import yfinance as yf
+    valid_symbols = []
+    valid_yahoo = []
+    
+    for t, y in zip(symbols, yahoo_tickers):
+        try:
+            ticker = yf.Ticker(y)
+            info = ticker.info
+            if info and info.get("regularMarketPrice") is not None:
+                valid_symbols.append(t)
+                valid_yahoo.append(y)
+            else:
+                print(f"⚠️ {t}/{y}: Ticker invalide - ignoré")
+        except Exception:
+            print(f"⚠️ {t}/{y}: Erreur - ignoré")
+    
+    return valid_symbols, valid_yahoo
+
 def download_price_data(universe_df: pd.DataFrame, start_date: str = "2014-01-01", end_date: str = None):
     if end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
     
+    symbols, yahoo_tickers = validate_tickers(
+        universe_df["ticker"].tolist(),
+        universe_df.apply(lambda r: r.get("yahoo_ticker", r["ticker"]), axis=1).tolist()
+    )
+    valid_df = universe_df[universe_df["ticker"].isin(symbols)].copy()
+    
     all_data = []
-    for _, row in universe_df.iterrows():
+    for _, row in valid_df.iterrows():
         yahoo_ticker = row.get("yahoo_ticker", row["ticker"])
         ticker = row["ticker"]
         try:
@@ -82,8 +107,7 @@ def download_price_data(universe_df: pd.DataFrame, start_date: str = "2014-01-01
                     data.columns = [c[0] if c[1] == "" else c[0].lower() for c in data.columns]
                 data["ticker"] = ticker
                 data = data.rename(columns={"Close": "close", "High": "high", "Low": "low", "Open": "open", "Volume": "volume"})
-                if "adj_close" not in data.columns:
-                    data["adj_close"] = data["close"]
+                data["adj_close"] = data["close"]
                 all_data.append(data[["ticker", "Date", "open", "high", "low", "close", "volume", "adj_close"]])
                 time.sleep(0.1)
             else:
@@ -133,26 +157,12 @@ def update_database(universe_df: pd.DataFrame, prices_df: pd.DataFrame, fundamen
         """, tuple(row))
     
     if not prices_df.empty:
-        existing = con.execute("SELECT COUNT(*) FROM prices").fetchone()[0]
-        if existing == 0:
-            for _, row in prices_df.iterrows():
-                con.execute("""
-                    INSERT INTO prices (ticker, date, open, high, low, close, volume, adj_close)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, tuple(row))
-        else:
-            for _, row in prices_df.iterrows():
-                con.execute("""
-                    INSERT OR REPLACE INTO prices (ticker, date, open, high, low, close, volume, adj_close)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, tuple(row))
+        prices_df.to_parquet("/tmp/prices_temp.parquet")
+        con.execute("CREATE OR REPLACE TABLE prices AS SELECT * FROM read_parquet('/tmp/prices_temp.parquet')")
     
     if not fundamentals_df.empty:
-        for _, row in fundamentals_df.iterrows():
-            con.execute("""
-                INSERT OR REPLACE INTO fundamentals (ticker, date, pe_ratio, pb_ratio, dividend_yield, market_cap)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, tuple(row))
+        fundamentals_df.to_parquet("/tmp/fundamentals_temp.parquet")
+        con.execute("CREATE OR REPLACE TABLE fundamentals AS SELECT * FROM read_parquet('/tmp/fundamentals_temp.parquet')")
     
     con.close()
 
