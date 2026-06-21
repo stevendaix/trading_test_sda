@@ -1,52 +1,202 @@
 ticker,yahoo_ticker,name,sector,exchange,eligible_pea,type
-MC.PA,MC.PA,LVMH,Consumer,EPA,True,stock
-ORA.PA,ORA.PA,Orange,Telecom,EPA,True,stock
+MC.PA,MC.PA,LVMH,Consumer Discretionary,EPA,True,stock
+SU.PA,SU.PA,Schneider Electric,Industrials,EPA,True,stock
+AIR.PA,AIR.PA,Airbus,Industrials,EPA,True,stock
+OR.PA,OR.PA,L'Oréal,Consumer Staples,EPA,True,stock
 SAN.PA,SAN.PA,Sanofi,Healthcare,EPA,True,stock
-AI.PA,AI.PA,Air Liquide,Industrials,EPA,True,stock
-BNP.PA,BNP.PA,BNP Paribas,Financial,EPA,True,stock
-GLE.PA,GLE.PA,Société Générale,Financial,EPA,True,stock
-ACA.PA,ACA.PA,Crédit Agricole,Financial,EPA,True,stock
-VIE.PA,VIE.PA,Vinci,Industrials,EPA,True,stock
+BNP.PA,BNP.PA,BNP Paribas,Financials,EPA,True,stock
+TTE.PA,TTE.PA,TotalEnergies,Energy,EPA,True,stock
+AI.PA,AI.PA,Air Liquide,Materials,EPA,True,stock
+CS.PA,CS.PA,Axa,Financials,EPA,True,stock
+DG.PA,DG.PA,Vinci,Industrials,EPA,True,stock
+SAF.PA,SAF.PA,Safran,Industrials,EPA,True,stock
+EL.PA,EL.PA,EssilorLuxottica,Healthcare,EPA,True,stock
+CAP.PA,CAP.PA,Capgemini,Technology,EPA,True,stock
+ENGI.PA,ENGI.PA,Engie,Utilities,EPA,True,stock
+KER.PA,KER.PA,Kering,Consumer Discretionary,EPA,True,stock
+ORA.PA,ORA.PA,Orange,Communication Services,EPA,True,stock
+RMS.PA,RMS.PA,Hermès,Consumer Discretionary,EPA,True,stock
+RNO.PA,RNO.PA,Renault,Consumer Discretionary,EPA,True,stock
+PUB.PA,PUB.PA,Publicis,Communication Services,EPA,True,stock
 SGO.PA,SGO.PA,Saint-Gobain,Materials,EPA,True,stock
-MTAAV.PA,MTAAV.PA,Matmut,Insurance,EPA,True,stock
-ENGI.PA,ENGI.PA,Engie,Energy,EPA,True,stock
-ELIS.PA,ELIS.PA,Elis,Services,EPA,True,stock
-AMS.PA,AMS.PA,Adecco,HR,EPA,True,stock
-EN.PA,EN.PA,Engie,Energy,EPA,True,stock
-BN.PA,BN.PA,Danone,Consumer,EPA,True,stock
-SW.PA,SW.PA,Sodexo,Services,EPA,True,stock
-RACE.RACE,Ferrari,Automotive,BIT,True,stock
-ASML.ASML,ASML,Semiconductor,ASML,True,stock
-TSCO.L,TSCO.L,Tesco,Retail,LSE,True,stock
-SHEL.L,SHEL.L,Shell,Energy,LSE,True,stock
-BP.L,BP.L,BP,Energy,LSE,True,stock
-VOW3.DE,VOW3.DE,Volkswagen,Automotive,XETRA,True,stock
-SAP.DE,SAP.DE,SAP,Software,XETRA,True,stock
-SIE.DE,SIE.DE,Siemens,Industrials,XETRA,True,stock
-ALV.DE,ALV.DE,Allianz,Insurance,XETRA,True,stock
-BMW.DE,BMW.DE,BMW,Automotive,XETRA,True,stock
-DAI.DE,DAI.DE,Daimler,Automotive,XETRA,True,stock
-DBK.DE,DBK.DE,Deutsche Bank,Financial,XETRA,True,stock
-BAS.DE,BAS.DE,BASF,Chemical,XETRA,True,stock
+STLAP.PA,STLAP.PA,Stellantis,Consumer Discretionary,EPA,True,stock
+STMPA.PA,STMPA.PA,STMicroelectronics,Technology,EPA,True,stock
+GLE.PA,GLE.PA,Société Générale,Financials,EPA,True,stock
+HO.PA,HO.PA,Thales,Industrials,EPA,True,stock
+RUI.PA,RUI.PA,Rubis,Energy,EPA,True,stock
+ACA.PA,ACA.PA,Crédit Agricole,Financials,EPA,True,stock
+BN.PA,BN.PA,Danone,Consumer Staples,EPA,True,stock
+VIE.PA,VIE.PA,Veolia,Utilities,EPA,True,stock
+WLN.PA,WLN.PA,Worldline,Technology,EPA,True,stock
+ATE.PA,ATE.PA,Altarea,Real Estate,EPA,True,stock
+LR.PA,LR.PA,Legrand,Industrials,EPA,True,stock
+EN.PA,EN.PA,Bouygues,Industrials,EPA,True,stock
+MTU.PA,MTU.PA,ArcelorMittal,Materials,EPA,True,stock
+ML.PA,ML.PA,Michelin,Consumer Discretionary,EPA,True,stock
+ERF.PA,ERF.PA,Eurofins,Healthcare,EPA,True,stock
+EDF.PA,EDF.PA,EDF,Utilities,EPA,True,stock
+RXL.PA,RXL.PA,Rexel,Industrials,EPA,True,stock
+GFC.PA,GFC.PA,Gecina,Real Estate,EPA,True,stock
+AMB.PA,AMB.PA,Amundi,Financials,EPA,True,stock
+ALSTOM.PA,ALSTOM.PA,Alstom,Industrials,EPA,True,stock
+BIC.PA,BIC.PA,Bic,Consumer Staples,EPA,True,stock
+BIO.PA,BIO.PA,BioMérieux,Healthcare,EPA,True,stock
+BOL.PA,BOL.PA,Bollore,Industrials,EPA,True,stock
+BV.PA,BV.PA,Bureau Veritas,Industrials,EPA,True,stock
+CA.PA,CA.PA,Carrefour,Consumer Staples,EPA,True,stock
+COFA.PA,COFA.PA,Coface,Financials,EPA,True,stock
+ENX.PA,ENX.PA,Euronext,Financials,EPA,True,stock
+FGR.PA,FGR.PA,Eiffage,Industrials,EPA,True,stock
+FRV.PA,FRV.PA,Faurecia,Consumer Discretionary,EPA,True,stock
+GTT.PA,GTT.PA,Gaztransport & Technigaz,Energy,EPA,True,stock
+HAV.PA,HAV.PA,Havas,Communication Services,EPA,True,stock
+IPS.PA,IPS.PA,Ipsen,Healthcare,EPA,True,stock
+IPN.PA,IPN.PA,Ipsos,Industrials,EPA,True,stock
+ITP.PA,ITP.PA,Itesoft,Technology,EPA,True,stock
+JDP.PA,JDP.PA,JCDecaux,Communication Services,EPA,True,stock
+KOF.PA,KOF.PA,Kaufman & Broad,Real Estate,EPA,True,stock
+LI.PA,LI.PA,Wendel,Financials,EPA,True,stock
+LNA.PA,LNA.PA,LNA Santé,Healthcare,EPA,True,stock
+MERY.PA,MERY.PA,Mercialys,Real Estate,EPA,True,stock
+MMT.PA,MMT.PA,MMT,Industrials,EPA,True,stock
+MRN.PA,MRN.PA,Mersen,Industrials,EPA,True,stock
+NEOEN.PA,NEOEN.PA,Neoen,Utilities,EPA,True,stock
+NEX.PA,NEX.PA,Nexity,Real Estate,EPA,True,stock
+OG.PA,OG.PA,Octo Technology,Technology,EPA,True,stock
+OPM.PA,OPM.PA,OPmobility,Consumer Discretionary,EPA,True,stock
+ORP.PA,ORP.PA,Orpea,Healthcare,EPA,True,stock
+PLNW.PA,PLNW.PA,Planisware,Technology,EPA,True,stock
+PNO.PA,PNO.PA,Pernod Ricard,Consumer Staples,EPA,True,stock
+PRX.PA,PRX.PA,Proximus,Communication Services,EPA,True,stock
+SAU.PA,SAU.PA,Saur,Utilities,EPA,True,stock
+SCR.PA,SCR.PA,SCOR,Financials,EPA,True,stock
+SEB.PA,SEB.PA,SEB,Consumer Discretionary,EPA,True,stock
+SK.PA,SK.PA,Sekoya Pharma,Healthcare,EPA,True,stock
+SOP.PA,SOP.PA,Sopra Steria,Technology,EPA,True,stock
+TEP.PA,TEP.PA,Teleperformance,Industrials,EPA,True,stock
+TF1.PA,TF1.PA,TF1,Communication Services,EPA,True,stock
+TIX.PA,TIX.PA,Tikehau Capital,Financials,EPA,True,stock
+TRI.PA,TRI.PA,Trigano,Consumer Discretionary,EPA,True,stock
+UG.PA,UG.PA,UGG,Consumer Discretionary,EPA,True,stock
+URW.PA,URW.PA,Unibail-Rodamco-Westfield,Real Estate,EPA,True,stock
+ALTERN.PA,ALTERN.PA,Alten,Technology Services,EPA,True,stock
+NOVAP.PA,NOVAP.PA,NovaCap,Technology,EPA,True,stock
+CLARI.PA,CLARI.PA,Claranova,Technology,EPA,True,stock
+DGT.PA,DGT.PA,Digigram,Technology,EPA,True,stock
+FDM.PA,FDM.PA,Fiducial Office,Technology,EPA,True,stock
+LHY.PA,LHY.PA,Lhyfe,Hydrogen,EPA,True,stock
+NXT.PA,NXT.PA,Nextmedia,Media Tech,EPA,True,stock
+TSE.PA,TSE.PA,TSE,Energy Services,EPA,True,stock
+VLT.PA,VLT.PA,Voltalia,Renewable Energy,EPA,True,stock
+WATT.PA,WATT.PA,Watts & Well,Energy Storage,EPA,True,stock
+ABV.PA,ABV.PA,Abivax,Biotech,EPA,True,stock
+ADP.PA,ADP.PA,Adocia,Biotech,EPA,True,stock
+DBV.PA,DBV.PA,DBV Technologies,Biotech,EPA,True,stock
+GEN.PA,GEN.PA,Genkyotex,Biotech,EPA,True,stock
+MEDCL.PA,MEDCL.PA,Medincell,Biotech,EPA,True,stock
+POM.PA,POM.PA,Poxel,Biotech,EPA,True,stock
+VIRP.PA,VIRP.PA,Virbac,Biotech,EPA,True,stock
+ADS.DE,ADS.DE,Adidas,Consumer Discretionary,XETRA,True,stock
+ALV.DE,ALV.DE,Allianz,Financials,XETRA,True,stock
+BAS.DE,BAS.DE,BASF,Materials,XETRA,True,stock
+BAYN.DE,BAYN.DE,Bayer,Healthcare,XETRA,True,stock
+BMW.DE,BMW.DE,BMW,Consumer Discretionary,XETRA,True,stock
+CON.DE,CON.DE,Continental,Consumer Discretionary,XETRA,True,stock
+DBK.DE,DBK.DE,Deutsche Bank,Financials,XETRA,True,stock
+DTE.DE,DTE.DE,Deutsche Telekom,Communication Services,XETRA,True,stock
+EOAN.DE,EOAN.DE,E.ON,Utilities,XETRA,True,stock
 FRE.DE,FRE.DE,Fresenius,Healthcare,XETRA,True,stock
-EOAN.DE,EOAN.DE,E.ON,Energy,XETRA,True,stock
-HEI.DE,HEI.DE,Heidelberg,Materials,XETRA,True,stock
-DB1.DE,DB1.DE,Deutsche Börse,Financial,XETRA,True,stock
-CON.DE,CON.DE,Continental,Automotive,XETRA,True,stock
-BAYN.DE,BAYN.DE,Bayer,Chemical,XETRA,True,stock
-RYAAY.RYAAY,Ryanair,Travel,LSE,True,stock
-ABI.BR,ABI.BR,AB InBev,Food,EBR,True,stock
-UG.PA,UG.PA,UG,Retail,EPA,True,stock
-ENEL.MI,ENEL.MI,Enel,Energy,BIT,True,stock
-STM.STM,STMicro,Semiconductor,BIT,True,stock
-TEN.MI,TEN.MI,Telecom Italia,Telecom,BIT,True,stock
-ISP.MI,ISP.MI,Intesa Sanpaolo,Financial,BIT,True,stock
-CW8,WPEA.PA,Amundi MSCI World UCITS,ETF,EPA,True,etf
-P500,P500.PA,Amundi PEA S&P 500 UCITS,ETF,EPA,True,etf
-PANX,PANX.PA,Amundi PEA Nasdaq-100 UCITS,ETF,EPA,True,etf
-CAC,CAC.PA,Amundi CAC 40 UCITS,ETF,EPA,True,etf
-EUN,EUN.PA,Amundi Euro Stoxx 50 UCITS,ETF,EPA,True,etf
-MEU,MEU.PA,Amundi MSCI Europe UCITS,ETF,EPA,True,etf
-ETZ,ETZ.PA,Amundi STOXX Europe 600 UCITS,ETF,EPA,True,etf
-PAEEM,PAEEM.PA,Amundi PEA Emerging Markets UCITS,ETF,EPA,True,etf
-PEMT,PEMT.PA,Amundi PEA PME Europe UCITS,ETF,EPA,True,etf
+HEI.DE,HEI.DE,Heidelberg Materials,Materials,XETRA,True,stock
+HEN3.DE,HEN3.DE,Henkel,Consumer Staples,XETRA,True,stock
+IFX.DE,IFX.DE,Infineon Technologies,Technology,XETRA,True,stock
+LHA.DE,LHA.DE,Lufthansa,Industrials,XETRA,True,stock
+MRK.DE,MRK.DE,Merck,Healthcare,XETRA,True,stock
+MUV2.DE,MUV2.DE,Munich Re,Financials,XETRA,True,stock
+PAH3.DE,PAH3.DE,Porsche AG,Consumer Discretionary,XETRA,True,stock
+RHM.DE,RHM.DE,Rheinmetall,Industrials,XETRA,True,stock
+RWE.DE,RWE.DE,RWE,Utilities,XETRA,True,stock
+SAP.DE,SAP.DE,SAP SE,Technology,XETRA,True,stock
+SIE.DE,SIE.DE,Siemens,Industrials,XETRA,True,stock
+SHL.DE,SHL.DE,Siemens Healthineers,Healthcare,XETRA,True,stock
+SRT3.DE,SRT3.DE,Sartorius,Healthcare,XETRA,True,stock
+VOW3.DE,VOW3.DE,Volkswagen,Consumer Discretionary,XETRA,True,stock
+ASML.AS,ASML.AS,ASML Holding,Technology,AMS,True,stock
+ADYEN.AS,ADYEN.AS,Adyen,Technology,AMS,True,stock
+AGN.AS,AGN.AS,Aegon,Financials,AMS,True,stock
+AKZA.AS,AKZA.AS,AkzoNobel,Materials,AMS,True,stock
+INGA.AS,INGA.AS,ING Group,Financials,AMS,True,stock
+KPN.AS,KPN.AS,KPN,Communication Services,AMS,True,stock
+MT.AS,MT.AS,ArcelorMittal,Materials,AMS,True,stock
+PHIA.AS,PHIA.AS,Philips,Healthcare,AMS,True,stock
+RAND.AS,RAND.AS,Randstad,Industrials,AMS,True,stock
+UNA.AS,UNA.AS,Unilever,Consumer Staples,AMS,True,stock
+ABI.BR,ABI.BR,Anheuser-Busch InBev,Consumer Staples,EBR,True,stock
+ARGX.BR,ARGX.BR,Argenx,Healthcare,EBR,True,stock
+COFB.BR,COFB.BR,Cofinimmo,Real Estate,EBR,True,stock
+COLR.BR,COLR.BR,Colruyt,Consumer Staples,EBR,True,stock
+GBLB.BR,GBLB.BR,GBL,Financials,EBR,True,stock
+SOLB.BR,SOLB.BR,Solvay,Materials,EBR,True,stock
+UCB.BR,UCB.BR,UCB,Healthcare,EBR,True,stock
+UMI.BR,UMI.BR,Umicore,Materials,EBR,True,stock
+AC.MC,AC.MC,ACS,Industrials,MCE,True,stock
+AENA.MC,AENA.MC,Aena,Industrials,MCE,True,stock
+BBVA.MC,BBVA.MC,BBVA,Financials,MCE,True,stock
+CABK.MC,CABK.MC,CaixaBank,Financials,MCE,True,stock
+ELE.MC,ELE.MC,Endesa,Utilities,MCE,True,stock
+IBE.MC,IBE.MC,Iberdrola,Utilities,MCE,True,stock
+ITX.MC,ITX.MC,Inditex,Consumer Discretionary,MCE,True,stock
+REP.MC,REP.MC,Repsol,Energy,MCE,True,stock
+SAN.MC,SAN.MC,Banco Santander,Financials,MCE,True,stock
+TEF.MC,TEF.MC,Telefónica,Communication Services,MCE,True,stock
+AMP.MI,AMP.MI,Amplifon,Healthcare,MIL,True,stock
+ATL.MI,ATL.MI,Atlantia,Industrials,MIL,True,stock
+ENEL.MI,ENEL.MI,Enel,Utilities,MIL,True,stock
+ENI.MI,ENI.MI,Eni,Energy,MIL,True,stock
+FBK.MI,FBK.MI,FinecoBank,Financials,MIL,True,stock
+G.MI,G.MI,Generali,Financials,MIL,True,stock
+IG.MI,IG.MI,Intesa Sanpaolo,Financials,MIL,True,stock
+LDO.MI,LDO.MI,Leonardo,Industrials,MIL,True,stock
+MB.MI,MB.MI,Moncler,Consumer Discretionary,MIL,True,stock
+PRY.MI,PRY.MI,Prysmian,Industrials,MIL,True,stock
+RCG.MI,RCG.MI,Recordati,Healthcare,MIL,True,stock
+STM.MI,STM.MI,STMicroelectronics,Technology,MIL,True,stock
+TEN.MI,TEN.MI,Telecom Italia,Communication Services,MIL,True,stock
+TRN.MI,TRN.MI,Terna,Utilities,MIL,True,stock
+UNI.MI,UNI.MI,Unicredit,Financials,MIL,True,stock
+EDP.LS,EDP.LS,EDP,Utilities,LIS,True,stock
+GALP.LS,GALP.LS,Galp Energia,Energy,LIS,True,stock
+NOS.LS,NOS.LS,NOS,Communication Services,LIS,True,stock
+SEM.LS,SEM.LS,Semapa,Materials,LIS,True,stock
+SON.LS,SON.LS,Sonae,Consumer Discretionary,LIS,True,stock
+EBS.VI,EBS.VI,Erste Group,Financials,VIE,True,stock
+LEN.VI,LEN.VI,Lenzing,Materials,VIE,True,stock
+MOI.VI,MOI.VI,Mondi,Materials,VIE,True,stock
+OMV.VI,OMV.VI,OMV,Energy,VIE,True,stock
+SBO.VI,SBO.VI,Strabag,Industrials,VIE,True,stock
+VER.VI,VER.VI,Verbund,Utilities,VIE,True,stock
+AMBU-B.CO,AMBU-B.CO,Ambu,Healthcare,CPH,True,stock
+CARL-B.CO,CARL-B.CO,Carlsberg,Consumer Staples,CPH,True,stock
+CHR.CO,CHR.CO,Chr. Hansen,Materials,CPH,True,stock
+DSV.CO,DSV.CO,DSV,Industrials,CPH,True,stock
+FLS.CO,FLS.CO,FLSmidth,Industrials,CPH,True,stock
+GMAB.CO,GMAB.CO,Genmab,Healthcare,CPH,True,stock
+DANSKE.CO,DANSKE.CO,Danske Bank,Financials,CPH,True,stock
+MAERSK-A.CO,MAERSK-A.CO,A.P. Moller-Maersk,Industrials,CPH,True,stock
+NESTE.HE,NESTE.HE,Neste,Energy,HEL,True,stock
+NOKIA.HE,NOKIA.HE,Nokia,Technology,HEL,True,stock
+NOVO-B.CO,NOVO-B.CO,Novo Nordisk,Healthcare,CPH,True,stock
+ORSTED.CO,ORSTED.CO,Ørsted,Utilities,CPH,True,stock
+NOZYM-B.CO,NOZYM-B.CO,Novozymes,Materials,CPH,True,stock
+ALFA.ST,ALFA.ST,Alfa Laval,Industrials,STO,True,stock
+ASSA-B.ST,ASSA-B.ST,Assa Abloy,Industrials,STO,True,stock
+ATCO-A.ST,ATCO-A.ST,Atlas Copco,Industrials,STO,True,stock
+VOLV-B.ST,VOLV-B.ST,Volvo,Industrials,STO,True,stock
+CW8,WPEA.PA,Amundi MSCI World UCITS ETF,ETF,EPA,True,etf
+P500,P500.PA,Amundi PEA S&P 500 UCITS ETF,ETF,EPA,True,etf
+PANX,PANX.PA,Amundi PEA Nasdaq-100 UCITS ETF,ETF,EPA,True,etf
+CAC,CAC.PA,Amundi CAC 40 UCITS ETF,ETF,EPA,True,etf
+EUN,EUN.PA,Amundi Euro Stoxx 50 UCITS ETF,ETF,EPA,True,etf
+MEU,MEU.PA,Amundi MSCI Europe UCITS ETF,ETF,EPA,True,etf
+ETZ,ETZ.PA,Amundi STOXX Europe 600 UCITS ETF,ETF,EPA,True,etf
+PAEEM,PAEEM.PA,Amundi PEA MSCI Emerging Markets UCITS ETF,ETF,EPA,True,etf
+PEMT,PEMT.PA,Amundi PEA PME Europe UCITS ETF,ETF,EPA,True,etf
