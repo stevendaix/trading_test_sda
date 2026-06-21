@@ -1,39 +1,44 @@
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
+import duckdb
 
-from data_collector import load_pea_universe, init_database, download_price_data, calculate_fundamentals, update_database
-from indicators import calculate_all_indicators, get_top_candidates
+from data_collector import load_pea_universe, init_database, DB_PATH
+from indicators import smart_money_scanner, calculate_value_indicators
 from backtester import run_backtest, calculate_signals_from_indicators
 from portfolio_optimizer import optimize_portfolio, apply_position_constraints
 
 DATA_DIR = Path(__file__).parent.parent / "data"
-DB_PATH = DATA_DIR / "market_data.db"
 
 def generate_portfolio_signals(n_candidates: int = 30) -> dict:
     universe_df = load_pea_universe()
-    tickers = universe_df["ticker"].tolist()
     
-    prices_df = download_price_data(tickers)
-    fundamentals_df = calculate_fundamentals(tickers)
+    con = duckdb.connect(str(DB_PATH))
+    prices_df = con.execute("SELECT * FROM prices ORDER BY ticker, date").fetchdf()
+    fundamentals_df = con.execute("SELECT * FROM fundamentals").fetchdf()
     
-    indicators_df = calculate_all_indicators(prices_df, fundamentals_df)
+    indicators_df = smart_money_scanner(prices_df)
+    indicators_df = calculate_value_indicators(indicators_df, fundamentals_df)
     
-    top_stocks = get_top_candidates(indicators_df, n=n_candidates)
+    signals_df = calculate_signals_from_indicators(indicators_df)
     
-    signals_df = calculate_signals_from_indicators(top_stocks)
+    # Run backtest on all tickers
+    backtest_result = run_backtest(prices_df, signals_df)
     
-    backtest_result = run_backtest(top_stocks, signals_df)
+    # Get top candidates for portfolio
+    latest_signals = signals_df[signals_df["date"] == signals_df["date"].max()].copy()
+    top_stocks = latest_signals[latest_signals["buy_signal"]].nlargest(n_candidates, "smart_money_score")
     
-    weights = optimize_portfolio(prices_df, signals_df)
+    weights = optimize_portfolio(prices_df, top_stocks)
     constrained_weights = apply_position_constraints(weights)
     
     return {
-        "tickers": tickers,
+        "tickers": universe_df["ticker"].tolist(),
         "indicators": indicators_df,
         "signals": signals_df,
         "backtest": backtest_result,
-        "weights": constrained_weights
+        "weights": constrained_weights,
+        "top_stocks": top_stocks
     }
 
 def run_monthly_rebalance() -> pd.DataFrame:

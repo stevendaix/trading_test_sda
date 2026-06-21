@@ -14,7 +14,7 @@ def optimize_portfolio(prices_df: pd.DataFrame, signals_df: pd.DataFrame, risk_f
     pivot_prices = pivot_prices.ffill().bfill()
     
     returns = expected_returns.mean_historical_return(pivot_prices)
-    cov_matrix = risk_models.sample_covariance(pivot_prices)
+    cov_matrix = risk_models.sample_cov(pivot_prices)
     
     ef = EfficientFrontier(returns, cov_matrix)
     ef.add_objective(objective_functions.L2_reg, gamma=0.1)

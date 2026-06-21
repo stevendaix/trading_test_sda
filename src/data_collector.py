@@ -73,9 +73,8 @@ def validate_tickers(symbols: list, yahoo_tickers: list) -> tuple:
     
     for t, y in zip(symbols, yahoo_tickers):
         try:
-            ticker = yf.Ticker(y)
-            info = ticker.info
-            if info and info.get("regularMarketPrice") is not None:
+            data = yf.download(y, period="1d", progress=False)
+            if not data.empty and "Close" in data.columns:
                 valid_symbols.append(t)
                 valid_yahoo.append(y)
             else:
@@ -89,18 +88,12 @@ def download_price_data(universe_df: pd.DataFrame, start_date: str = "2014-01-01
     if end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
     
-    symbols, yahoo_tickers = validate_tickers(
-        universe_df["ticker"].tolist(),
-        universe_df.apply(lambda r: r.get("yahoo_ticker", r["ticker"]), axis=1).tolist()
-    )
-    valid_df = universe_df[universe_df["ticker"].isin(symbols)].copy()
-    
     all_data = []
-    for _, row in valid_df.iterrows():
-        yahoo_ticker = row.get("yahoo_ticker", row["ticker"])
-        ticker = row["ticker"]
+    for _, row in universe_df.iterrows():
+        yahoo_ticker = row["ticker"]  # ticker column contains correct Yahoo symbols
+        ticker = row["ticker"]  # Same as yahoo_ticker
         try:
-            data = yf.download(yahoo_ticker, start=start_date, end=end_date)
+            data = yf.download(yahoo_ticker, start=start_date, end=end_date, progress=False)
             if not data.empty:
                 data = data.reset_index()
                 if isinstance(data.columns[0], tuple):
@@ -127,11 +120,11 @@ def calculate_fundamentals(universe_df: pd.DataFrame):
     for _, row in universe_df.iterrows():
         if row.get("type", "stock") == "etf":
             continue
-        yahoo_ticker = row.get("yahoo_ticker", row["ticker"])
+        yahoo_ticker = row["ticker"]  # Use ticker column directly
         ticker = row["ticker"]
         try:
             stock = yf.Ticker(yahoo_ticker)
-            info = stock.info
+            info = stock.info.copy()
             fundamentals.append({
                 "ticker": ticker,
                 "date": datetime.now().strftime("%Y-%m-%d"),
@@ -149,12 +142,14 @@ def calculate_fundamentals(universe_df: pd.DataFrame):
 def update_database(universe_df: pd.DataFrame, prices_df: pd.DataFrame, fundamentals_df: pd.DataFrame):
     con = duckdb.connect(str(DB_PATH))
     
+    universe_df["eligible_pea"] = universe_df["eligible_pea"].map({"True": True, "False": False, True: True, False: False})
+    
     con.execute("DELETE FROM universe")
     for _, row in universe_df.iterrows():
         con.execute("""
             INSERT INTO universe (ticker, yahoo_ticker, name, sector, exchange, eligible_pea, type)
             VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, tuple(row))
+        """, (row["ticker"], row["ticker"], row["name"], row["sector"], row["exchange"], row["eligible_pea"], row["type"]))
     
     if not prices_df.empty:
         prices_df.to_parquet("/tmp/prices_temp.parquet")

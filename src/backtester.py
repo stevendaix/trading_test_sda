@@ -10,13 +10,33 @@ TradingFee = 0.005
 TransactionCost = TradingFee
 
 def run_backtest(prices: pd.DataFrame, signals: pd.DataFrame) -> dict:
-    entries = signals["buy_signal"].fillna(False)
-    exits = signals["sell_signal"].fillna(False)
+    # Handle both long and wide formats
+    if isinstance(prices, pd.DataFrame) and "ticker" in prices.columns:
+        # Long format: pivot to wide
+        close = prices.pivot(index="date", columns="ticker", values="close")
+    else:
+        # Already wide format
+        close = prices
+    
+    # Extract signals
+    if isinstance(signals, pd.DataFrame) and "ticker" in signals.columns and "buy_signal" in signals.columns:
+        buy_signal = signals.pivot(index="date", columns="ticker", values="buy_signal")
+        sell_signal = signals.pivot(index="date", columns="ticker", values="sell_signal")
+    else:
+        buy_signal = signals.get("buy_signal") if hasattr(signals, 'get') else signals
+        sell_signal = signals.get("sell_signal") if hasattr(signals, 'get') else None
+    
+    # Align indices and columns
+    if hasattr(buy_signal, 'columns'):
+        common_cols = close.columns.intersection(buy_signal.columns)
+        close = close[common_cols].dropna(how='all', axis=1)
+        buy_signal = buy_signal[common_cols].fillna(False).astype(bool)
+        sell_signal = sell_signal[common_cols].fillna(False).astype(bool)
     
     portfolio = vbt.Portfolio.from_signals(
-        close=prices["close"],
-        entries=entries,
-        exits=exits,
+        close=close,
+        entries=buy_signal.astype(bool),
+        exits=sell_signal.astype(bool),
         freq="1D",
         fees=TransactionCost,
         slippage=0.001,
@@ -31,7 +51,7 @@ def run_backtest(prices: pd.DataFrame, signals: pd.DataFrame) -> dict:
         "total_return": portfolio.total_return(),
         "sharpe_ratio": portfolio.sharpe_ratio(),
         "max_drawdown": portfolio.max_drawdown(),
-        "win_rate": portfolio.win_rate()
+        "win_rate": portfolio.stats()["Win Rate[%]"].mean() if "Win Rate[%]" in portfolio.stats() else None
     }
 
 def calculate_signals_from_indicators(df: pd.DataFrame) -> pd.DataFrame:

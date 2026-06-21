@@ -45,11 +45,25 @@ def calculate_relative_strength(prices_df: pd.DataFrame, benchmark_df: pd.DataFr
     df["relative_return"] = 1.0
     return df
 
+def calculate_rsi(prices_df: pd.DataFrame, window: int = 14) -> pd.DataFrame:
+    import vectorbt as vbt
+    df = prices_df.copy()
+    df = df.sort_values(["ticker", "date"])
+    
+    close = df.pivot(index="date", columns="ticker", values="close")
+    rsi = vbt.RSI.run(close, window=window).rsi
+    if isinstance(rsi.columns[0], tuple):
+        rsi.columns = [c[1] for c in rsi.columns]
+    rsi_long = rsi.melt(ignore_index=False, var_name="ticker", value_name="rsi_14").reset_index()
+    df = df.merge(rsi_long, on=["date", "ticker"])
+    return df
+
 def smart_money_scanner(prices_df: pd.DataFrame) -> pd.DataFrame:
     df = prices_df.copy()
     
     df = calculate_moving_averages(df)
     df = calculate_volume_indicators(df)
+    df = calculate_rsi(df)
     
     df["trend_score"] = df["trend_green"].astype(int) + df["above_sma_200"].astype(int)
     df["volume_score"] = df["volume_spike"].astype(int) + df["volume_ok"].astype(int)
@@ -62,7 +76,11 @@ def smart_money_scanner(prices_df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def calculate_value_indicators(prices_df: pd.DataFrame, fundamentals_df: pd.DataFrame) -> pd.DataFrame:
-    merged = prices_df.merge(fundamentals_df, on="ticker", how="left")
+    merged = prices_df.merge(fundamentals_df, on="ticker", how="left", suffixes=("", "_fund"))
+    
+    # Handle date column duplication
+    if "date_fund" in merged.columns:
+        merged = merged.drop(columns=["date_fund"])
     
     merged["pe_ratio"] = merged["pe_ratio"].clip(upper=100)
     merged["pb_ratio"] = merged["pb_ratio"].clip(upper=20)

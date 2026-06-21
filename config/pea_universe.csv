@@ -1,6 +1,6 @@
 ticker,yahoo_ticker,name,sector,exchange,eligible_pea,type
-MC.PA,MC.PA,LVMH,Luxury,Consumer Staples,EPA,True,stock
-SAN.PA,SAN.PA,Sanofi,Healthcare,Healthcare,EPA,True,stock
+MC.PA,MC.PA,LVMH,Consumer Staples,EPA,True,stock
+SAN.PA,SAN.PA,Sanofi,Healthcare,EPA,True,stock
 AIR.PA,AIR.PA,Airbus,Industrials,EPA,True,stock
 OR.PA,OR.PA,L'Oréal,Consumer Staples,EPA,True,stock
 AI.PA,AI.PA,Air Liquide,Materials,EPA,True,stock
@@ -87,3 +87,8 @@ STM.MI,STM.MI,STMicroelectronics,Technology,MIL,True,stock
 WPEA.PA,WPEA.PA,Amundi MSCI World UCITS,ETF,EPA,True,etf
 PANX.PA,PANX.PA,Amundi PEA Nasdaq-100 UCITS,ETF,EPA,True,etf
 CAC.PA,CAC.PA,Amundi CAC 40 UCITS,ETF,EPA,True,etf
+EXSA.DE,EXSA.DE,iShares MSCI EM UCITS,ETF,XETRA,True,etf
+DBXA.DE,DBXA.DE,Deutsche Euro Stoxx 50,ETF,XETRA,True,etf
+VUSA.DE,VUSA.DE,Vanguard S&P 500 UCITS,ETF,XETRA,True,etf
+EQQQ.DE,EQQQ.DE,Euro Stoxx 50 UCITS,ETF,XETRA,True,etf
+SXR8.DE,SXR8.DE,iShares Core Stoxx Europe,ETF,XETRA,True,etf

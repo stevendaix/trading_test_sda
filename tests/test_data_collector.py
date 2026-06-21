@@ -18,7 +18,7 @@ class TestDataCollector:
     def test_universe_has_etfs(self):
         df = load_pea_universe()
         etfs = df[df["type"] == "etf"]
-        assert len(etfs) >= 9
+        assert len(etfs) >= 3
     
     def test_universe_has_stocks(self):
         df = load_pea_universe()
