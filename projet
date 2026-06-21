@@ -1,0 +1,390 @@
+Voici un prompt complet et structuré pour construire ta plateforme de trading PEA moyen terme :
+
+---
+
+# 🎯 PROMPT : Plateforme de Trading PEA Moyen Terme - Value & Momentum
+
+## 📋 Contexte & Contraintes
+
+**Objectif** : Construire une plateforme de trading algorithmique pour PEA français avec :
+- **Horizon de détention** : 3 à 12 mois (moyen terme)
+- **Fréquence de rebalancement** : Mensuelle ou trimestrielle (minimiser les frais)
+- **Univers** : Actions européennes éligibles PEA + ETF PEA
+- **Stratégie** : Acheter des entreprises à fort potentiel à bas prix, vendre aux plus hauts
+- **Contrainte majeure** : Frais de trading élevés → minimiser le turnover
+- **Diversification** : 15-30 lignes simultanées
+
+---
+
+## 🏗️ Architecture Technique
+
+### **Couche 1 : Acquisition de Données**
+
+```python
+# Modules requis
+- yfinance : Actions européennes (Yahoo Finance)
+- ccxt : ETF et données alternatives
+- pandas-datareader : Données fondamentales
+- beautifulsoup4 : Scraping données financières si nécessaire
+- requests-cache : Cache pour éviter les rate limits
+```
+
+**Données à collecter** :
+- Prix historiques (OHLCV) sur 10 ans minimum
+- Données fondamentales trimestrielles (P/E, P/B, ROE, croissance CA, marge nette, dette/equity)
+- Liste des actions éligibles PEA (filtrage manuel initial ou scraping)
+- Dividendes et splits (ajustements)
+
+---
+
+### **Couche 2 : Stockage & Gestion**
+
+```python
+# Modules requis
+- duckdb : Base de données analytique locale (fichier unique, ultra-rapide)
+- pyarrow / parquet : Format de stockage columnar
+- pandas : Manipulation de données
+- numpy : Calculs numériques
+```
+
+**Structure de données** :
+```
+market_data.db/
+├── prices (OHLCV quotidien, toutes actions)
+├── fundamentals (données trimestrielles)
+├── universe (liste actions éligibles PEA)
+└── signals (signaux générés par les stratégies)
+```
+
+---
+
+### **Couche 3 : Indicateurs & Signaux**
+
+#### **A. Indicateurs de Valeur (Value Investing)**
+```python
+# Modules requis
+- pandas-ta : Indicateurs techniques
+- finnhub-python : Données fondamentales (gratuit)
+- ou scraping direct des bilans
+
+# Indicateurs à calculer
+- P/E ratio (Price/Earnings) < 15
+- P/B ratio (Price/Book) < 1.5
+- EV/EBITDA < 10
+- Dividend Yield > 2%
+- Prix / Valeur comptable
+- Free Cash Flow Yield
+```
+
+#### **B. Indicateurs de Qualité (Quality Investing)**
+```python
+# Indicateurs à calculer
+- ROE (Return on Equity) > 15%
+- ROA (Return on Assets) > 5%
+- Marge nette > 10%
+- Croissance CA sur 3 ans > 10%/an
+- Debt/Equity < 0.5
+- Interest Coverage Ratio > 5
+- Consistance des bénéfices (pas de pertes sur 5 ans)
+```
+
+#### **C. Indicateurs de Momentum (Timing)**
+```python
+# Modules requis
+- pandas-ta ou TA-Lib
+
+# Indicateurs à calculer
+- Moyenne mobile 200 jours (tendance long terme)
+- RSI 14 jours (surachat/survente)
+- MACD (confirmation de tendance)
+- Momentum 6 mois et 12 mois
+- Relative Strength vs indice de référence (CAC40, EuroStoxx50)
+- Breakout sur plus haut de 52 semaines
+```
+
+#### **D. Indicateurs de Risque**
+```python
+# Modules requis
+- empyrical : Mesures de risque
+- pyfolio : Analyse de portefeuille
+
+# Indicateurs à calculer
+- Volatilité historique 60 jours
+- Beta vs indice de référence
+- Maximum Drawdown historique
+- Sharpe Ratio
+- Corrélation avec le portefeuille actuel
+```
+
+---
+
+### **Couche 4 : Stratégie & Signal Generation**
+
+```python
+# Modules requis
+- vectorbt : Backtesting vectorisé
+- pandas : Logique de stratégie
+- numpy : Calculs matriciels
+```
+
+**Logique de signal d'achat** (exemple) :
+```python
+def generate_buy_signal(stock_data):
+    # Filtres de valeur
+    value_score = (
+        (stock_data['pe_ratio'] < 15) * 0.3 +
+        (stock_data['pb_ratio'] < 1.5) * 0.2 +
+        (stock_data['ev_ebitda'] < 10) * 0.2 +
+        (stock_data['dividend_yield'] > 0.02) * 0.1 +
+        (stock_data['fcf_yield'] > 0.05) * 0.2
+    )
+    
+    # Filtres de qualité
+    quality_score = (
+        (stock_data['roe'] > 0.15) * 0.3 +
+        (stock_data['revenue_growth_3y'] > 0.10) * 0.3 +
+        (stock_data['net_margin'] > 0.10) * 0.2 +
+        (stock_data['debt_equity'] < 0.5) * 0.2
+    )
+    
+    # Filtres de momentum
+    momentum_score = (
+        (stock_data['price'] > stock_data['sma_200']) * 0.4 +
+        (stock_data['momentum_6m'] > 0) * 0.3 +
+        (stock_data['rsi_14'] < 70) * 0.3
+    )
+    
+    # Score composite
+    total_score = value_score * 0.4 + quality_score * 0.4 + momentum_score * 0.2
+    
+    return total_score > 0.7  # Seuil à optimiser
+```
+
+**Logique de signal de vente** :
+```python
+def generate_sell_signal(stock_data, entry_price):
+    # Take profit
+    if stock_data['price'] > entry_price * 1.30:  # +30%
+        return True
+    
+    # Stop loss
+    if stock_data['price'] < entry_price * 0.85:  # -15%
+        return True
+    
+    # Détérioration des fondamentaux
+    if stock_data['pe_ratio'] > 25 or stock_data['roe'] < 0.10:
+        return True
+    
+    # Perte de momentum
+    if stock_data['price'] < stock_data['sma_200']:
+        return True
+    
+    return False
+```
+
+---
+
+### **Couche 5 : Backtesting & Optimisation**
+
+```python
+# Modules requis
+- vectorbt : Backtesting rapide
+- optuna : Optimisation bayésienne des paramètres
+- scikit-learn : Validation croisée temporelle
+- joblib : Parallélisation
+
+# Processus de backtesting
+1. Backtest sur univers complet (500+ actions européennes)
+2. Calcul des performances par action
+3. Sélection des 50 meilleures
+4. Optimisation des paramètres (seuils, poids des scores)
+5. Validation out-of-sample (période non utilisée pour l'optimisation)
+6. Test de robustesse (walk-forward analysis)
+```
+
+**Métriques à optimiser** :
+```python
+# Modules requis
+- quantstats : Rapport de performance
+- empyrical : Mesures de risque
+
+- Sharpe Ratio > 1.5
+- Maximum Drawdown < 20%
+- Win Rate > 55%
+- Profit Factor > 1.5
+- Nombre de trades < 50/an (contrainte frais)
+- Turnover annuel < 100%
+```
+
+---
+
+### **Couche 6 : Gestion de Portefeuille**
+
+```python
+# Modules requis
+- PyPortfolioOpt : Optimisation de portefeuille
+- riskfolio-lib : Allocation avancée
+- cvxpy : Optimisation convexe
+
+# Allocation
+- Égalisation des risques (Risk Parity)
+- Ou maximisation du Sharpe Ratio
+- Contraintes :
+  - Max 5% par action
+  - Min 15 actions, max 30
+  - Max 20% par secteur
+  - Rebalancement trimestriel
+```
+
+---
+
+### **Couche 7 : Monitoring & Alertes**
+
+```python
+# Modules requis
+- grafana (Docker) : Dashboards
+- prometheus : Métriques
+- python-telegram-bot : Alertes
+- schedule : Exécution périodique
+```
+
+**Alertes à configurer** :
+- Nouveaux signaux d'achat (top 10 scores)
+- Signaux de vente déclenchés
+- Performance du portefeuille vs benchmark
+- Alertes risque (drawdown > 15%, volatilité élevée)
+
+---
+
+### **Couche 8 : Exécution Live (optionnel)**
+
+```python
+# Modules requis
+- ib_insync : Interactive Brokers API
+- ou saxo_openapi : Saxo Bank API
+- ou api courtier français (Boursorama, Fortuneo - scraping si pas d'API)
+
+# Note : Pour PEA, souvent exécution manuelle après réception des signaux
+```
+
+---
+
+## 📊 Plan de Développement
+
+### **Phase 1 : Fondation (Semaine 1-2)**
+- [ ] Setup environnement (Docker, Python, DuckDB)
+- [ ] Collecte données historiques (10 ans, 500+ actions européennes)
+- [ ] Nettoyage et stockage dans DuckDB
+- [ ] Création de l'univers PEA (filtrage actions éligibles)
+
+### **Phase 2 : Indicateurs (Semaine 3-4)**
+- [ ] Calcul des indicateurs de valeur (P/E, P/B, etc.)
+- [ ] Calcul des indicateurs de qualité (ROE, croissance, etc.)
+- [ ] Calcul des indicateurs de momentum (MM, RSI, MACD)
+- [ ] Validation des calculs sur quelques exemples manuels
+
+### **Phase 3 : Stratégie & Backtesting (Semaine 5-6)**
+- [ ] Implémentation de la logique de signaux
+- [ ] Backtest vectorisé avec VectorBT
+- [ ] Analyse des performances par action
+- [ ] Identification des meilleures combinaisons d'indicateurs
+
+### **Phase 4 : Optimisation (Semaine 7-8)**
+- [ ] Optimisation des seuils avec Optuna
+- [ ] Walk-forward analysis (validation temporelle)
+- [ ] Test de robustesse (périodes de crise, bull/bear markets)
+- [ ] Ajustement pour minimiser le turnover
+
+### **Phase 5 : Portefeuille & Monitoring (Semaine 9-10)**
+- [ ] Optimisation de l'allocation (PyPortfolioOpt)
+- [ ] Simulation de portefeuille complet
+- [ ] Setup Grafana + alertes Telegram
+- [ ] Génération de rapports de performance
+
+### **Phase 6 : Paper Trading (Semaine 11-12)**
+- [ ] Exécution en paper trading pendant 1 mois
+- [ ] Comparaison avec backtest
+- [ ] Ajustements finaux
+- [ ] Documentation
+
+---
+
+## 🎯 Livrables Attendus
+
+1. **Base de données** : `market_data.db` avec 10 ans de données
+2. **Scripts Python** :
+   - `data_collector.py` : Collecte et mise à jour des données
+   - `indicators.py` : Calcul de tous les indicateurs
+   - `strategy.py` : Génération des signaux
+   - `backtester.py` : Backtesting et optimisation
+   - `portfolio_optimizer.py` : Allocation optimale
+   - `monitor.py` : Monitoring et alertes
+3. **Dashboards Grafana** : Performance, positions, signaux
+4. **Rapport de performance** : PDF/HTML avec métriques complètes
+5. **Documentation** : README, guide d'utilisation, explication stratégie
+
+---
+
+## ⚠️ Points de Vigilance
+
+1. **Frais de trading** : 
+   - Intégrer les frais dans le backtest (0.5% à 1% par trade selon courtier)
+   - Pénaliser le turnover dans la fonction objectif
+   
+2. **Biais de survie** :
+   - Inclure les actions délístées dans les données historiques
+   - Sinon surperformance artificielle
+
+3. **Look-ahead bias** :
+   - S'assurer que les données fondamentales sont utilisées avec le bon lag (trimestre décalé)
+   
+4. **Overfitting** :
+   - Validation croisée temporelle stricte
+   - Walk-forward analysis obligatoire
+   - Nombre de paramètres < 10
+
+5. **Risque PEA** :
+   - Respecter les règles PEA (actions européennes, plafonds)
+   - Pas de short, pas de produits dérivés
+
+---
+
+## 🚀 Commandes de Démarrage Rapide
+
+```bash
+# Création de l'environnement
+mkdir pea-trading-platform && cd pea-trading-platform
+python -m venv venv
+source venv/bin/activate
+
+# Installation des dépendances
+pip install vectorbt pandas-ta pypfopt quantstats yfinance duckdb \
+            optuna scikit-learn python-telegram-bot schedule \
+            pandas numpy pyarrow requests-cache beautifulsoup4
+
+# Structure du projet
+mkdir -p data/{raw,processed,models}
+mkdir -p src/{data,indicators,strategy,backtest,portfolio,monitoring}
+mkdir -p notebooks
+mkdir -p config
+```
+
+---
+
+## 📚 Ressources Complémentaires
+
+- **Livres** : "The Little Book of Value Investing" (Greenblatt), "Quantitative Value" (Gray & Vogel)
+- **Papers** : "Value and Momentum Everywhere" (Asness et al.)
+- **Communautés** : r/algotrading, QuantConnect Forum, Wilmott
+
+---
+
+Ce prompt est prêt à être utilisé comme cahier des charges complet. Tu peux le donner à un développeur ou l'utiliser toi-même étape par étape. 
+
+Veux-tu que je te génère maintenant :
+1. **Le code complet du data collector** (téléchargement et stockage des données)
+2. **Le script de calcul des indicateurs** (value, quality, momentum)
+3. **Le backtester vectorisé** avec VectorBT
+4. **L'optimiseur de paramètres** avec Optuna
+
+Dis-moi par quoi tu veux commencer !
