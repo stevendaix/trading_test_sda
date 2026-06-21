@@ -7,8 +7,12 @@ env/
 venv/
 .venv/
 *.csv
+!config/pea_universe.csv
 *.parquet
 *.pkl
 *.log
 .vscode/
 .idea/
+.env
+market_data.db
+cache/

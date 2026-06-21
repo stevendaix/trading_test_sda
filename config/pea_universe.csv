@@ -1,0 +1,52 @@
+ticker,yahoo_ticker,name,sector,exchange,eligible_pea,type
+MC.PA,MC.PA,LVMH,Consumer,EPA,True,stock
+ORA.PA,ORA.PA,Orange,Telecom,EPA,True,stock
+SAN.PA,SAN.PA,Sanofi,Healthcare,EPA,True,stock
+AI.PA,AI.PA,Air Liquide,Industrials,EPA,True,stock
+BNP.PA,BNP.PA,BNP Paribas,Financial,EPA,True,stock
+GLE.PA,GLE.PA,Société Générale,Financial,EPA,True,stock
+ACA.PA,ACA.PA,Crédit Agricole,Financial,EPA,True,stock
+VIE.PA,VIE.PA,Vinci,Industrials,EPA,True,stock
+SGO.PA,SGO.PA,Saint-Gobain,Materials,EPA,True,stock
+MTAAV.PA,MTAAV.PA,Matmut,Insurance,EPA,True,stock
+ENGI.PA,ENGI.PA,Engie,Energy,EPA,True,stock
+ELIS.PA,ELIS.PA,Elis,Services,EPA,True,stock
+AMS.PA,AMS.PA,Adecco,HR,EPA,True,stock
+EN.PA,EN.PA,Engie,Energy,EPA,True,stock
+BN.PA,BN.PA,Danone,Consumer,EPA,True,stock
+SW.PA,SW.PA,Sodexo,Services,EPA,True,stock
+RACE.RACE,Ferrari,Automotive,BIT,True,stock
+ASML.ASML,ASML,Semiconductor,ASML,True,stock
+TSCO.L,TSCO.L,Tesco,Retail,LSE,True,stock
+SHEL.L,SHEL.L,Shell,Energy,LSE,True,stock
+BP.L,BP.L,BP,Energy,LSE,True,stock
+VOW3.DE,VOW3.DE,Volkswagen,Automotive,XETRA,True,stock
+SAP.DE,SAP.DE,SAP,Software,XETRA,True,stock
+SIE.DE,SIE.DE,Siemens,Industrials,XETRA,True,stock
+ALV.DE,ALV.DE,Allianz,Insurance,XETRA,True,stock
+BMW.DE,BMW.DE,BMW,Automotive,XETRA,True,stock
+DAI.DE,DAI.DE,Daimler,Automotive,XETRA,True,stock
+DBK.DE,DBK.DE,Deutsche Bank,Financial,XETRA,True,stock
+BAS.DE,BAS.DE,BASF,Chemical,XETRA,True,stock
+FRE.DE,FRE.DE,Fresenius,Healthcare,XETRA,True,stock
+EOAN.DE,EOAN.DE,E.ON,Energy,XETRA,True,stock
+HEI.DE,HEI.DE,Heidelberg,Materials,XETRA,True,stock
+DB1.DE,DB1.DE,Deutsche Börse,Financial,XETRA,True,stock
+CON.DE,CON.DE,Continental,Automotive,XETRA,True,stock
+BAYN.DE,BAYN.DE,Bayer,Chemical,XETRA,True,stock
+RYAAY.RYAAY,Ryanair,Travel,LSE,True,stock
+ABI.BR,ABI.BR,AB InBev,Food,EBR,True,stock
+UG.PA,UG.PA,UG,Retail,EPA,True,stock
+ENEL.MI,ENEL.MI,Enel,Energy,BIT,True,stock
+STM.STM,STMicro,Semiconductor,BIT,True,stock
+TEN.MI,TEN.MI,Telecom Italia,Telecom,BIT,True,stock
+ISP.MI,ISP.MI,Intesa Sanpaolo,Financial,BIT,True,stock
+CW8,WPEA.PA,Amundi MSCI World UCITS,ETF,EPA,True,etf
+P500,P500.PA,Amundi PEA S&P 500 UCITS,ETF,EPA,True,etf
+PANX,PANX.PA,Amundi PEA Nasdaq-100 UCITS,ETF,EPA,True,etf
+CAC,CAC.PA,Amundi CAC 40 UCITS,ETF,EPA,True,etf
+EUN,EUN.PA,Amundi Euro Stoxx 50 UCITS,ETF,EPA,True,etf
+MEU,MEU.PA,Amundi MSCI Europe UCITS,ETF,EPA,True,etf
+ETZ,ETZ.PA,Amundi STOXX Europe 600 UCITS,ETF,EPA,True,etf
+PAEEM,PAEEM.PA,Amundi PEA Emerging Markets UCITS,ETF,EPA,True,etf
+PEMT,PEMT.PA,Amundi PEA PME Europe UCITS,ETF,EPA,True,etf
