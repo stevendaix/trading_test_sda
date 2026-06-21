@@ -1,10 +1,9 @@
 import yfinance as yf
 import duckdb
 import pandas as pd
-import requests_cache
 import os
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 
 DATA_DIR = Path(__file__).parent.parent / "data"
@@ -14,12 +13,6 @@ FRED_API_KEY = os.getenv("FRED_API_KEY", "abcdefghijklmnopqrstuvwxyz123456")
 
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 DATA_DIR.mkdir(parents=True, exist_ok=True)
-
-session = requests_cache.CachedSession(
-    cache_dir=str(CACHE_DIR),
-    expire_after=timedelta(days=1),
-    backend="sqlite"
-)
 
 def init_database():
     con = duckdb.connect(str(DB_PATH))
@@ -82,11 +75,16 @@ def download_price_data(universe_df: pd.DataFrame, start_date: str = "2014-01-01
         yahoo_ticker = row.get("yahoo_ticker", row["ticker"])
         ticker = row["ticker"]
         try:
-            data = yf.download(yahoo_ticker, start=start_date, end=end_date, session=session)
+            data = yf.download(yahoo_ticker, start=start_date, end=end_date)
             if not data.empty:
                 data = data.reset_index()
+                if isinstance(data.columns[0], tuple):
+                    data.columns = [c[0] if c[1] == "" else c[0].lower() for c in data.columns]
                 data["ticker"] = ticker
-                all_data.append(data)
+                data = data.rename(columns={"Close": "close", "High": "high", "Low": "low", "Open": "open", "Volume": "volume"})
+                if "adj_close" not in data.columns:
+                    data["adj_close"] = data["close"]
+                all_data.append(data[["ticker", "Date", "open", "high", "low", "close", "volume", "adj_close"]])
                 time.sleep(0.1)
             else:
                 print(f"No data for {yahoo_ticker}")
@@ -95,7 +93,7 @@ def download_price_data(universe_df: pd.DataFrame, start_date: str = "2014-01-01
     
     if all_data:
         df = pd.concat(all_data, ignore_index=True)
-        df.columns = ["date", "open", "high", "low", "close", "adj_close", "volume", "ticker"]
+        df = df.rename(columns={"Date": "date"})
         df["date"] = pd.to_datetime(df["date"]).dt.date
         return df[["ticker", "date", "open", "high", "low", "close", "volume", "adj_close"]]
     return pd.DataFrame()
@@ -108,7 +106,7 @@ def calculate_fundamentals(universe_df: pd.DataFrame):
         yahoo_ticker = row.get("yahoo_ticker", row["ticker"])
         ticker = row["ticker"]
         try:
-            stock = yf.Ticker(yahoo_ticker, session=session)
+            stock = yf.Ticker(yahoo_ticker)
             info = stock.info
             fundamentals.append({
                 "ticker": ticker,

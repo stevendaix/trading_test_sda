@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: trading_test_sda
+Version: 0.1.0
+Summary: Trading strategy backtesting and analysis framework
+Author: stevendaix
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: yfinance>=0.2.0
+Requires-Dist: duckdb>=1.0.0
+Requires-Dist: requests-cache>=1.1.0
+Requires-Dist: vectorbt>=1.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: optuna>=3.0.0; extra == "dev"
+
+# trading_test_sda
+
+Trading strategy backtesting and analysis framework.
+
+## Setup
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+```
+
+## Project Structure
+
+- `src/` - Source code
+  - `backtest.py` - Core backtesting functions
+- `tests/` - Unit tests
+- `data/` - Market data and results
+- `docs/` - Documentation
+
+## Usage
+
+```python
+from backtest import load_data, run_backtest
+
+# Load your market data
+data = load_data("data/your_data.csv")
+
+# Run backtest with your strategy
+results = run_backtest(my_strategy, data)
+```
+
+## Testing
+
+```bash
+pytest tests/
+```

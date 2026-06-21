@@ -2,7 +2,64 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent.parent / "data"
+DATA_DIR = Path(__file__).parent.parent
+
+def calculate_moving_averages(prices_df: pd.DataFrame) -> pd.DataFrame:
+    df = prices_df.copy()
+    df = df.sort_values(["ticker", "date"])
+    
+    df["sma_50"] = df.groupby("ticker")["close"].transform(
+        lambda x: x.rolling(50).mean()
+    )
+    df["sma_200"] = df.groupby("ticker")["close"].transform(
+        lambda x: x.rolling(200).mean()
+    )
+    
+    df["above_sma_50"] = df["close"] > df["sma_50"]
+    df["above_sma_200"] = df["close"] > df["sma_200"]
+    df["trend_green"] = df["above_sma_50"] & df["above_sma_200"]
+    
+    return df
+
+def calculate_volume_indicators(prices_df: pd.DataFrame) -> pd.DataFrame:
+    df = prices_df.copy()
+    
+    df["dollar_volume"] = df["close"] * df["volume"]
+    df["avg_volume_30d"] = df.groupby("ticker")["dollar_volume"].transform(
+        lambda x: x.rolling(30).mean()
+    )
+    
+    df["volume_spike"] = df["dollar_volume"] > 2 * df["avg_volume_30d"]
+    df["volume_ok"] = df["avg_volume_30d"] > 1000000
+    
+    return df
+
+def calculate_relative_strength(prices_df: pd.DataFrame, benchmark_df: pd.DataFrame = None) -> pd.DataFrame:
+    df = prices_df.copy()
+    
+    if benchmark_df is not None:
+        merged = df.merge(benchmark_df, on="date", suffixes=("", "_bench"))
+        merged["relative_return"] = merged["close"] / merged["close_bench"]
+        return merged
+    
+    df["relative_return"] = 1.0
+    return df
+
+def smart_money_scanner(prices_df: pd.DataFrame) -> pd.DataFrame:
+    df = prices_df.copy()
+    
+    df = calculate_moving_averages(df)
+    df = calculate_volume_indicators(df)
+    
+    df["trend_score"] = df["trend_green"].astype(int) + df["above_sma_200"].astype(int)
+    df["volume_score"] = df["volume_spike"].astype(int) + df["volume_ok"].astype(int)
+    
+    df["smart_money_score"] = (
+        df["trend_score"] * 0.4 +
+        df["volume_score"] * 0.6
+    )
+    
+    return df
 
 def calculate_value_indicators(prices_df: pd.DataFrame, fundamentals_df: pd.DataFrame) -> pd.DataFrame:
     merged = prices_df.merge(fundamentals_df, on="ticker", how="left")
@@ -23,28 +80,22 @@ def calculate_value_indicators(prices_df: pd.DataFrame, fundamentals_df: pd.Data
     
     return merged
 
-def calculate_quality_indicators(prices_df: pd.DataFrame) -> pd.DataFrame:
-    result = prices_df.copy()
+def calculate_smart_money_score(df: pd.DataFrame) -> pd.DataFrame:
+    df = smart_money_scanner(df)
+    df = calculate_value_indicators(df, pd.DataFrame())
     
-    result["price_to_sma200"] = result["close"] / result["sma_200"]
-    result["quality_momentum"] = result["price_to_sma200"] > 1
+    df["composite_score"] = (
+        df["smart_money_score"] * 0.4 +
+        df["value_score"] * 0.6
+    )
     
-    return result
+    return df
 
-def calculate_momentum_indicators(prices_df: pd.DataFrame) -> pd.DataFrame:
-    result = prices_df.copy()
-    
-    result["rsi_14"] = 50
-    result["momentum_6m"] = 0.0
-    result["momentum_12m"] = 0.0
-    result["above_sma_200"] = result["close"] > result.get("sma_200", result["close"])
-    
-    return result
-
-def calculate_all_indicators(prices_df: pd.DataFrame, fundamentals_df: pd.DataFrame) -> pd.DataFrame:
-    result = calculate_value_indicators(prices_df, fundamentals_df)
-    result = calculate_momentum_indicators(result)
-    return result
-
-def get_top_candidates(df: pd.DataFrame, n: int = 30, score_col: str = "value_score") -> pd.DataFrame:
-    return df.nlargest(n, score_col)
+def get_smart_money_signals(df: pd.DataFrame, threshold: float = 0.5) -> pd.DataFrame:
+    df = calculate_smart_money_score(df)
+    df["buy_signal"] = (
+        df["trend_green"] &
+        df["volume_spike"] &
+        (df["composite_score"] > threshold)
+    )
+    return df

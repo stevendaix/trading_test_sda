@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+src/trading_test_sda.egg-info/PKG-INFO
+src/trading_test_sda.egg-info/SOURCES.txt
+src/trading_test_sda.egg-info/dependency_links.txt
+src/trading_test_sda.egg-info/requires.txt
+src/trading_test_sda.egg-info/top_level.txt
+tests/test_backtest.py
+tests/test_data_collector.py
