@@ -11,8 +11,11 @@ venv/
 *.parquet
 *.pkl
 *.log
+*.sqlite
 .vscode/
 .idea/
 .env
 market_data.db
+market_data.db.wal
 cache/
+*.egg-info/
