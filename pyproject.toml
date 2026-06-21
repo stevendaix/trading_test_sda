@@ -15,6 +15,11 @@ authors = [
 dependencies = [
     "pandas>=2.0.0",
     "numpy>=1.24.0",
+    "yfinance>=0.2.0",
+    "duckdb>=1.0.0",
+    "requests-cache>=1.1.0",
+    "vectorbt>=1.0.0",
+    "pandas-ta>=0.3.0",
 ]
 
 [project.optional-dependencies]
@@ -23,6 +28,7 @@ dev = [
     "pytest-cov>=4.0.0",
     "black>=23.0.0",
     "ruff>=0.1.0",
+    "optuna>=3.0.0",
 ]
 
 [tool.setuptools.packages.find]

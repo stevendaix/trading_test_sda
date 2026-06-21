@@ -2,32 +2,30 @@
 
 ## 1. Priorité de développement
 **✅ Phase 1 : Fondation (collecte de données + DuckDB)** - Compléter
+**✅ Phase 2 : Indicateurs (value/quality/momentum)** - Compléter
+**🔄 Phase 3 : Stratégie & Backtesting** - En cours
 
 ## 2. Source de données fondamentales
-**✅ Hybrid : `yfinance` + fichier CSV curaté + `openbb-sdk` (en upgrade)**
+**✅ Hybrid : `yfinance` + fichier CSV curaté + `openbb-sdk`**
 - ✅ `data_collector.py` généré avec yfinance et cache
 
 ## 3. Univers boursier
-**✅ VALIDÉ** - Tickers ETF PEA fournis et intégrés
+**✅ VALIDÉ** - ~150 valeurs PEA-éligibles (stocks + ETFs)
 
 ## 4. Broker pour exécution
-**✅ Exécution manuelle assistée par signaux** - Compléter
+**✅ Exécution manuelle assistée par signaux**
 
-## 5. Fonctionnalités prioritaires
-**✅ Ordre de génération recommandé :**
-1. ✅ `data_collector.py` - Généré
-2. `indicators.py` - Calcul value/quality/momentum
-3. `backtester.py` - Validation des signaux
-4. `portfolio_optimizer.py` - Allocation optimale
-5. `strategy.py` - Orchestration finale + alertes
+## 5. Fonctionnalités générées
+1. ✅ `data_collector.py` - Collecte OHLCV + fondamentaux → DuckDB
+2. ✅ `indicators.py` - Calcul indicateurs value/momentum
+3. ✅ `backtester.py` - VectorBT avec frais PEA (0.5%)
+4. `portfolio_optimizer.py` - À générer
+5. `strategy.py` - À générer
 
 ---
 
-## Notes supplémentaires
+## Prochaines étapes
 
-### Kaggle dataset Yahoo Finance
-- `list_tickers.json` et le dataset Kaggle contiennent des tickers US (non PEA compatibles)
-- Ignorés pour ce projet PEA France
-
-### FRED API
-- `FRED_API_KEY` configurée dans `.env` (ignorer Phase 1-3)
+- Générer `portfolio_optimizer.py` avec PyPortfolioOpt
+- Générer `strategy.py` avec orchestration
+- Tests d'intégration avec vraies données
